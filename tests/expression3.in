@@ -1,0 +1,14 @@
+3 1 1 7 2
+8
+0 0 0 0
+0 0 1 1
+0 1 0 0
+0 1 1 1
+1 0 0 1
+1 0 1 1
+1 1 0 1
+1 1 1 0
+    // <numinputs>  <numoutputs> <width> <length> <arity>
+    // <numSamples>
+    // 01011110 [or  [and [not b] a] [xor a c]]
+    // ((((( a  and  b ) xor  a ) or ( c  xor  a )))
