@@ -12,7 +12,6 @@
 
 using namespace std;
 
-void mutate(vector<int> individual);
 
 class CartesianGP {
     private:
@@ -215,6 +214,42 @@ class CartesianGP {
 
             return fit;
         }
+
+        void mutate(vector<int> individual) {
+            int upper = numInputs;
+
+            vector<int> range;
+            for (unsigned int i = 0; i < individual.size(); ++i) {
+                range.push_back(i);
+            }
+            
+            int num = 0.2*individual.size();
+            int choices[num];
+            for (int i = 0; i < num; ++i) {
+                int index = randMod(range.size());
+                choices[i] = individual[range[index]];
+                range.erase(range.begin()+index);
+            }
+
+            for (auto choice : choices) {
+                if (choice <= (width*length*(arity+1))) {
+                    if (choice % width == 0) {
+                        upper = numInputs+(choice/(arity+1));
+                    }
+
+                    if (choice % (arity+1) == 0) {
+                        individual[choice] = randMod(4); 
+                    }
+                    else {
+                        individual[choice] = randMod(upper);
+                    }
+                }
+                else {
+                    individual[choice] = randMod(numInputs+width*length);
+                }
+            }
+
+        }
 };
 
 int main() {
@@ -222,9 +257,21 @@ int main() {
     auto toEvaluate = model.identify(model.population[0]);
     cout << model.fitness(model.population[0]) << endl;
 
-    for (auto x : toEvaluate) {
+    for (auto x : model.population[0]) {
         cout << x << " ";
     }
+    cout << endl;
+
+    // auto mutated = model.population[0];
+    // model.mutate(mutated);
+
+    // for (auto x : mutated) {
+    //     cout << x << " ";
+    // }
+
+    // for (auto x : toEvaluate) {
+    //     cout << x << " ";
+    // }
     
     return 0;
 }
