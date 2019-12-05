@@ -22,13 +22,12 @@ class CartesianGP {
         int width;
         int length;
         int arity;
-        
         int numSamples;
+
+        int** data;
 
     public:
         vector<vector<int>> population;
-        int** inputs;
-        int** outputs;
 
         CartesianGP() {
             initRand();
@@ -38,16 +37,16 @@ class CartesianGP {
             cin >> width;
             cin >> length;
             cin >> arity;
-
             cin >> numSamples;
 
-            inputs = new int*[numSamples];
-            int data[numSamples][numInputs+numOutputs];
+            data = new int*[numSamples];
 
             for (int i = 0; i < numSamples; ++i) {
+                data[i] = new int[numInputs+numOutputs];
                 for (int j = 0; j < numInputs+numOutputs; ++j) {
                     cin >> data[i][j];
                 }
+                cout << endl;
             }
 
             for (int i = 0; i < 4; ++i) {
@@ -69,12 +68,12 @@ class CartesianGP {
                 population.push_back(individual);
             }
 
-            for (const vector<int> &v : population) {
-                for (int x : v) {
-                    cout << x << " ";
-                }
-                cout << endl;
-            }
+            // for (const vector<int> &v : population) {
+            //     for (int x : v) {
+            //         cout << x << " ";
+            //     }
+            //     cout << endl;
+            // }
         }
 };
 
