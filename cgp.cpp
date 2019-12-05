@@ -4,6 +4,7 @@
 #include <cmath>
 #include <string.h>
 #include <vector> 
+#include <map>
 #include <deque>
 #include <algorithm>
 #include <numeric> 
@@ -11,7 +12,6 @@
 
 using namespace std;
 
-int fitness(vector<int> individual);
 void mutate(vector<int> individual);
 
 class CartesianGP {
@@ -49,6 +49,7 @@ class CartesianGP {
 
             for (int i = 0; i < 4; ++i) {
                 vector<int> individual; 
+
                 for (int j = 0; j < (width*length); ++j) {
                     individual.push_back(randMod(4));
                     for (int k = 0; k < arity; ++k) {
@@ -124,11 +125,102 @@ class CartesianGP {
 
             return toEvaluate;
         }
+
+        int fitness(vector<int> individual) {
+            vector<int> unsplit = vector<int>(individual.begin(), individual.end()-numOutputs);
+            vector<int> outputGenes = vector<int>(individual.begin()+(arity+1)*length*width, individual.end());
+            
+            int n = arity+1;
+            int size = (unsplit.size()-1)/n+1;
+            
+            vector<int> nodes[size];
+
+            for (int i = 0; i < size; ++i) {
+                auto start = next(unsplit.cbegin(), i*n);
+                auto end = next(unsplit.cbegin(), i*n + n);
+
+                nodes[i].resize(n);
+
+                copy(start, end, nodes[i].begin());
+            }
+
+            map<int, bool> outputs; 
+
+            auto toEvaluate = identify(individual);
+            
+            int fit = 0;
+
+            for (int i = 0; i < numSamples; ++i) {
+                for (int p = 0; p < numInputs; ++p) { 
+                    outputs[p] = data[i][p];
+                }
+
+                for (int p = 0; p < size; ++p) {
+                    if (toEvaluate[p]) {
+                        bool in1 = outputs[nodes[p][1]];
+                        bool in2 = outputs[nodes[p][2]];
+                        if (nodes[p][0] == 0) {
+                            outputs[p+numInputs] = (in1 && in2);
+                        }
+                        else if (nodes[p][0] == 1) {
+                            outputs[p+numInputs] = (in1 || in2);
+                        }
+                        else if (nodes[p][0] == 2) {
+                            outputs[p+numInputs] = (in1 != in2);
+                        }
+                        else if (nodes[p][0] == 3) {
+                            outputs[p+numInputs] = (!in1);
+                        }
+                    }
+                }
+
+                bool output[numOutputs];
+
+                int k = 0;
+                for (auto gene : outputGenes) {
+                    output[k] = outputs[gene];
+                    ++k;
+                }
+
+                k = 0;
+                bool trueOutput[numOutputs]; 
+                for (int j = numInputs; j < numInputs+numOutputs; ++j) {
+                    trueOutput[k] = data[i][j];
+                    ++k;
+                }
+
+                for (int j = 0; j < numOutputs; ++j) {
+                    cout << trueOutput[j] << ' '; 
+                }
+                cout << endl;
+                cout << endl;
+
+                for (int j = 0; j < numOutputs; ++j) {
+                    cout << output[j] << ' '; 
+                }
+                cout << endl;
+                cout << "---" << endl;
+
+                bool flag = true;
+                for (int  j = 0; j < numOutputs; ++j) {
+                    if (trueOutput[j] != output[j]) {
+                        flag = false;
+                    }
+                }
+
+                if (flag) {
+                    fit++;
+                }
+            }
+
+            return fit;
+        }
 };
 
 int main() {
     CartesianGP model;
-    auto toEvaluate = model.identify(model.population[1]);
+    auto toEvaluate = model.identify(model.population[0]);
+    cout << model.fitness(model.population[0]) << endl;
 
     for (auto x : toEvaluate) {
         cout << x << " ";
