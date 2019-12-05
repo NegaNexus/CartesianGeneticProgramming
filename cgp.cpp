@@ -1,5 +1,4 @@
 #include "rand.h"
-#include "matplotlibcpp.h"
 
 #include <iostream>
 #include <cmath>

@@ -1,15 +1,13 @@
-BIN=points
+BIN=cgp
 
 CXX=g++
 SHELL=/bin/sh
 MKDIR_P = mkdir -p
 
 # Optimization flags
-CXXFLAGS=-O3 -Wall
+# CXXFLAGS=-O3 -Wall
 # Debugging flags
-# CXXFLAGS=-g -Wall
-
-LIBS=
+CXXFLAGS=-g -Wall
 
 SRCS=\
 $(BIN).cpp\
