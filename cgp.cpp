@@ -215,7 +215,7 @@ class CartesianGP {
             return fit;
         }
 
-        void mutate(vector<int> individual) {
+        void mutate(vector<int>& individual) {
             int upper = numInputs;
 
             vector<int> range;
@@ -227,9 +227,21 @@ class CartesianGP {
             int choices[num];
             for (int i = 0; i < num; ++i) {
                 int index = randMod(range.size());
-                choices[i] = individual[range[index]];
+                choices[i] = range[index];
+                cout << "choices: " << choices[i] << endl;
+                for (auto x : range) {
+                    cout << x << ' ';
+                }
+                cout << endl;
+                cout << "===" << endl;
                 range.erase(range.begin()+index);
             }
+
+            for (auto x : choices) {
+                cout << x << ' ';
+            }
+            cout << endl;
+            cout << "---" << endl;
 
             for (auto choice : choices) {
                 if (choice <= (width*length*(arity+1))) {
@@ -262,12 +274,13 @@ int main() {
     }
     cout << endl;
 
-    // auto mutated = model.population[0];
-    // model.mutate(mutated);
+    auto mutated = model.population[0];
+    model.mutate(mutated);
 
-    // for (auto x : mutated) {
-    //     cout << x << " ";
-    // }
+    for (auto x : mutated) {
+        cout << x << " ";
+    }
+    cout << endl;
 
     for (auto x : toEvaluate) {
         cout << x << " ";
