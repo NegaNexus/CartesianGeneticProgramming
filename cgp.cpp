@@ -54,7 +54,7 @@ class CartesianGP {
                     for (int k = 0; k < arity; ++k) {
                         int upper;
                         if (i % width == 0) {
-                            upper = numInputs+i;
+                            upper = numInputs+j;
                         }
                         individual.push_back(randMod(upper));
                     }
@@ -255,7 +255,7 @@ class CartesianGP {
 int main() {
     CartesianGP model;
     auto toEvaluate = model.identify(model.population[0]);
-    cout << model.fitness(model.population[0]) << endl;
+    // cout << model.fitness(model.population[0]) << endl;
 
     for (auto x : model.population[0]) {
         cout << x << " ";
@@ -269,9 +269,9 @@ int main() {
     //     cout << x << " ";
     // }
 
-    // for (auto x : toEvaluate) {
-    //     cout << x << " ";
-    // }
+    for (auto x : toEvaluate) {
+        cout << x << " ";
+    }
     
     return 0;
 }
