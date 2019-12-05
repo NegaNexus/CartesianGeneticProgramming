@@ -66,18 +66,19 @@ class CartesianGP {
                 population.push_back(individual);
             }
 
-            for (const vector<int> &v : population) {
-                for (int x : v) {
-                    cout << x << " ";
-                }
-                cout << endl;
-            }
+            // Print population
+            // for (const vector<int> &v : population) {
+            //     for (int x : v) {
+            //         cout << x << " ";
+            //     }
+            //     cout << endl;
+            // }
         }
 
-        void identify(vector<int> individual) {
+        vector<bool> identify(vector<int> individual) {
             vector<int> unsplit = vector<int>(individual.begin(), individual.end()-numOutputs);
-            vector<int> outputGenes = vector<int>(individual.begin()+numOutputs, individual.end());
-
+            vector<int> outputGenes = vector<int>(individual.begin()+(arity+1)*length*width, individual.end());
+            
             int n = arity+1;
             int size = (unsplit.size()-1)/n+1;
             
@@ -92,35 +93,46 @@ class CartesianGP {
                 copy(start, end, nodes[i].begin());
             }
 
+            // Print split
+            // for (int i = 0; i < size; ++i) {
+            //     for (int j = 0; j < nodes[i].size(); ++j)
+            //         cout << nodes[i][j] << " ";
+            //     cout << endl;
+            // }
+
+            vector<bool> toEvaluate;
             for (int i = 0; i < size; ++i) {
-                for (int j = 0; j < nodes[i].size(); ++j)
-                    cout << nodes[i][j] << " ";
-                cout << endl;
+                toEvaluate.push_back(false);
             }
 
-            // bool to_evaluate[len];
+            for (int p = 0; p < numOutputs; ++p) {
+                if (outputGenes[p] >= numInputs) {
+                    toEvaluate[outputGenes[p]-numInputs] = true;
+                }
+            }
 
-            // for (int p = 0; p < numOutputs; ++p) {
-            //     if (outputGenes[p] >= numInputs) {
-            //         to_evaluate[outputGenes[p]-numInputs] = true;
-            //     }
-            //     else {
-            //         to_evaluate[outputGenes[p]-numInputs] = false;
-            //     }
-            // }
+            for (int p = size; p >= 0; --p) {
+                if (toEvaluate[p]) {
+                    if (nodes[p][1] >= numInputs) {
+                        toEvaluate[nodes[p][1]-numInputs] = true;
+                    }
+                    if (nodes[p][2] >= numInputs) { 
+                        toEvaluate[nodes[p][2]-numInputs] = true;
+                    }
+                }
+            }
 
-            // for (int p = len; p >= 0; ++p) {
-            //     if (to_evaluate[p]) {
-            //     }
-            // }
-
+            return toEvaluate;
         }
-
 };
 
 int main() {
     CartesianGP model;
-    model.identify(model.population[0]);
+    auto toEvaluate = model.identify(model.population[1]);
 
+    for (auto x : toEvaluate) {
+        cout << x << " ";
+    }
+    
     return 0;
 }
