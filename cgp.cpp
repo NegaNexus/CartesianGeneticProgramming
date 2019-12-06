@@ -67,12 +67,12 @@ class CartesianGP {
             }
 
             // Print population
-            // for (const vector<int> &v : population) {
-            //     for (int x : v) {
-            //         cout << x << " ";
-            //     }
-            //     cout << endl;
-            // }
+            for (const vector<int> &v : population) {
+                for (int x : v) {
+                    cout << x << " ";
+                }
+                cout << endl;
+            }
         }
 
         vector<bool> identify(vector<int> individual) {
@@ -114,6 +114,7 @@ class CartesianGP {
             for (int p = size; p >= 0; --p) {
                 if (toEvaluate[p]) {
                     // cout << "nodes: " << nodes[p][1] << endl;
+                    // cout << nodes[p][1] << endl;
                     if (nodes[p][1] >= numInputs) {
                         toEvaluate[nodes[p][1]-numInputs] = true;
                     }
@@ -261,7 +262,6 @@ class CartesianGP {
                     individual[choice] = randMod(numInputs+width*length);
                 }
             }
-
         }
 
         void run(int iters=10000) {
@@ -425,6 +425,46 @@ class CartesianGP {
             }
 
             cout << endl << "Fitness: " << fixed << setprecision(6) << (double)bestFit << endl;
+
+            for (auto x : bestIndividual) {
+                cout << x << " ";
+            }
+            cout << endl;
+
+            for (auto gene : outputGenes) {
+                cout << genOutput(gene, nodes) << endl;
+            }
+        }
+
+        string genOutput(int num, vector<int> nodes[]) {
+            string out = ""; 
+            if (num >= numInputs) {
+                bool in1 = nodes[num-numInputs][1];
+                bool in2 = nodes[num-numInputs][2];
+
+                out += genOutput(in1, nodes);
+
+                if (nodes[num-numInputs][0] == 0) {
+                    out += " and ";
+                }
+                else if (nodes[num-numInputs][0] == 1) {
+                    out += " or ";
+                }
+                else if (nodes[num-numInputs][0] == 2) {
+                    out += " xor ";
+                }
+                else if (nodes[num-numInputs][0] == 3) {
+                    out += " not ";
+                }
+
+                out += genOutput(in2, nodes);
+            }
+            else {
+                out += (char)(num + 65);
+            }
+
+            return out;
+
         }
 };
 
