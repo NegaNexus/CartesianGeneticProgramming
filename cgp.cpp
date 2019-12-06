@@ -328,7 +328,6 @@ class CartesianGP {
             }
 
             for (auto gene : outputGenes) {
-                cout << "gene: " << gene << endl;
                 for (int i = 0; i < numInputs; ++i) {
                     if (i == gene) {
                         inputsUsed[i] = true;
@@ -382,7 +381,7 @@ class CartesianGP {
 
                 cout << i+numInputs << " ";
 
-                if (outputs[i]) {
+                if (outputs[numInputs+i]) {
                     cout << "T";
                 }
                 else if (toEvaluate[i] == false) {
@@ -419,7 +418,6 @@ class CartesianGP {
                 }
 
                 cout << i+numInputs+length*width << " ";
-                cout << "outputgene: " << outputGenes[i] << endl;
                 if (outputs[outputGenes[i]]) {
                     cout << "T";
                 }
