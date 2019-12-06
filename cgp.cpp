@@ -294,6 +294,11 @@ class CartesianGP {
                 }
             }
 
+            for (auto gene : bestIndividual) {
+                cout << gene; 
+            }
+            cout << endl;
+
             cout << "FINAL Gen " << it << " :" << endl << endl;
             vector<int> unsplit = vector<int>(bestIndividual.begin(), bestIndividual.end()-numOutputs);
             vector<int> outputGenes = vector<int>(bestIndividual.begin()+(arity+1)*length*width, bestIndividual.end());
@@ -335,6 +340,71 @@ class CartesianGP {
                 cout << " INPUT     "; 
             }
             cout << endl;
+
+            map<int, bool> outputs; 
+
+            auto toEvaluate = identify(bestIndividual);
+            
+            for (int p = 0; p < numInputs; ++p) { 
+                outputs[p] = data[numSamples-1][p];
+            }
+
+            for (int p = 0; p < size; ++p) {
+                if (toEvaluate[p]) {
+                    bool in1 = outputs[nodes[p][1]];
+                    bool in2 = outputs[nodes[p][2]];
+                    if (nodes[p][0] == 0) {
+                        outputs[p+numInputs] = (in1 && in2);
+                    }
+                    else if (nodes[p][0] == 1) {
+                        outputs[p+numInputs] = (in1 || in2);
+                    }
+                    else if (nodes[p][0] == 2) {
+                        outputs[p+numInputs] = (in1 != in2);
+                    }
+                    else if (nodes[p][0] == 3) {
+                        outputs[p+numInputs] = (!in1);
+                    }
+                }
+            }
+
+            bool output[numOutputs];
+
+            int k = 0;
+            for (auto gene : outputGenes) {
+                output[k] = outputs[gene];
+                ++k;
+            }
+
+            for (int i = numInputs; i < (length*width); ++i) {
+                cout << i << " ";
+
+                if (outputs[i]) {
+                    cout << "T";
+                }
+                else {
+                    cout << "F";
+                }
+               
+                cout << "  ";
+
+                if (nodes[i-numInputs][0] == 0) {
+                    cout << "AND";
+                }
+                else if (nodes[i-numInputs][0] == 1) {
+                    cout << "OR";
+                }
+                else if (nodes[i-numInputs][0] == 2) {
+                    cout << "XOR";
+                }
+                else if (nodes[i-numInputs][0] == 3) {
+                    cout << "NOT";
+                }
+
+                cout << " (  " << nodes[i-numInputs][1];
+                cout << "  " << nodes[i-numInputs][2] << " )";
+                cout << "    "; 
+            }
         }
 };
 
