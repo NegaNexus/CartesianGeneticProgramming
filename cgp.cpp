@@ -53,7 +53,7 @@ class CartesianGP {
                     individual.push_back(randMod(4));
                     for (int k = 0; k < arity; ++k) {
                         int upper;
-                        if (i % width == 0) {
+                        if (j % width == 0) {
                             upper = numInputs+j;
                         }
                         individual.push_back(randMod(upper));
@@ -289,7 +289,7 @@ class CartesianGP {
 
                 for (int i = 0; i < 4; ++i) {
                     auto child = bestIndividual;
-                    mutate(child);
+                    // mutate(child);
                     population.push_back(child);
                 }
             }
