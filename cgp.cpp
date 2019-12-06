@@ -317,14 +317,21 @@ class CartesianGP {
                 copy(start, end, nodes[i].begin());
             }
             
-            bool inputsUsed[numInputs];
+            bool inputsUsed[numInputs] = {false};
+
             for (auto node : nodes) {
                 for (int i = 0; i < numInputs; ++i) {
                     if ((i == node[1]) or (i == node[2])) {
                         inputsUsed[i] = true; 
                     }
-                    else {
-                        inputsUsed[i] = false;
+                }
+            }
+
+            for (auto gene : outputGenes) {
+                cout << "gene: " << gene << endl;
+                for (int i = 0; i < numInputs; ++i) {
+                    if (i == gene) {
+                        inputsUsed[i] = true;
                     }
                 }
             }
@@ -368,14 +375,6 @@ class CartesianGP {
                 }
             }
 
-            bool output[numOutputs];
-
-            int k = 0;
-            for (auto gene : outputGenes) {
-                output[k] = outputs[gene];
-                ++k;
-            }
-
             for (int i = 0; i < (length*width); ++i) {
                 if (i % 3 == 0) {
                     cout << endl;
@@ -412,6 +411,25 @@ class CartesianGP {
                 cout << "  " << nodes[i][2] << " )";
                 cout << "    "; 
 
+            }
+
+            for (int i = 0; i < numOutputs; ++i) {
+                if (i % 3 == 0) {
+                    cout << endl;
+                }
+
+                cout << i+numInputs+length*width << " ";
+                if (outputs[outputGenes[i]]) {
+                    cout << "T";
+                }
+                else {
+                    cout << "F";
+                }
+
+                cout << "  OUT (  ";
+
+                cout << outputGenes[i] << " )";
+                cout << "    "; 
             }
         }
 };
