@@ -285,19 +285,12 @@ class CartesianGP {
 
                 population.push_back(bestIndividual);
 
-                cout << bestFit << endl;
-
                 for (int i = 0; i < 4; ++i) {
                     auto child = bestIndividual;
-                    // mutate(child);
+                    mutate(child);
                     population.push_back(child);
                 }
             }
-
-            for (auto gene : bestIndividual) {
-                cout << gene; 
-            }
-            cout << endl;
 
             cout << "FINAL Gen " << it << " :" << endl << endl;
             vector<int> unsplit = vector<int>(bestIndividual.begin(), bestIndividual.end()-numOutputs);
