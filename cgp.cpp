@@ -289,7 +289,7 @@ class CartesianGP {
 
                 for (int i = 0; i < 4; ++i) {
                     auto child = bestIndividual;
-                    // mutate(child);
+                    mutate(child);
                     population.push_back(child);
                 }
             }
@@ -339,7 +339,7 @@ class CartesianGP {
                 }
                 cout << " INPUT     "; 
             }
-            cout << endl;
+            // cout << endl;
 
             map<int, bool> outputs; 
 
@@ -376,8 +376,12 @@ class CartesianGP {
                 ++k;
             }
 
-            for (int i = numInputs; i < (length*width); ++i) {
-                cout << i << " ";
+            for (int i = 0; i < (length*width); ++i) {
+                if (i % 3 == 0) {
+                    cout << endl;
+                }
+
+                cout << i+numInputs << " ";
 
                 if (outputs[i]) {
                     cout << "T";
@@ -388,22 +392,23 @@ class CartesianGP {
                
                 cout << "  ";
 
-                if (nodes[i-numInputs][0] == 0) {
+                if (nodes[i][0] == 0) {
                     cout << "AND";
                 }
-                else if (nodes[i-numInputs][0] == 1) {
+                else if (nodes[i][0] == 1) {
                     cout << "OR";
                 }
-                else if (nodes[i-numInputs][0] == 2) {
+                else if (nodes[i][0] == 2) {
                     cout << "XOR";
                 }
-                else if (nodes[i-numInputs][0] == 3) {
+                else if (nodes[i][0] == 3) {
                     cout << "NOT";
                 }
 
-                cout << " (  " << nodes[i-numInputs][1];
-                cout << "  " << nodes[i-numInputs][2] << " )";
+                cout << " (  " << nodes[i][1];
+                cout << "  " << nodes[i][2] << " )";
                 cout << "    "; 
+
             }
         }
 };
