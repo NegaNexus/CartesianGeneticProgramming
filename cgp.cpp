@@ -289,7 +289,7 @@ class CartesianGP {
 
                 for (int i = 0; i < 4; ++i) {
                     auto child = bestIndividual;
-                    mutate(child);
+                    // mutate(child);
                     population.push_back(child);
                 }
             }
@@ -398,7 +398,7 @@ class CartesianGP {
                     cout << "AND";
                 }
                 else if (nodes[i][0] == 1) {
-                    cout << "OR";
+                    cout << " OR";
                 }
                 else if (nodes[i][0] == 2) {
                     cout << "XOR";
@@ -419,6 +419,7 @@ class CartesianGP {
                 }
 
                 cout << i+numInputs+length*width << " ";
+                cout << "outputgene: " << outputGenes[i] << endl;
                 if (outputs[outputGenes[i]]) {
                     cout << "T";
                 }
@@ -431,6 +432,8 @@ class CartesianGP {
                 cout << outputGenes[i] << " )";
                 cout << "    "; 
             }
+
+            cout << endl << "Fitness: " << fixed << setprecision(6) << (double)bestFit << endl;
         }
 };
 
