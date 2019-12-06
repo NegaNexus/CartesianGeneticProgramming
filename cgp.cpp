@@ -113,6 +113,7 @@ class CartesianGP {
 
             for (int p = size; p >= 0; --p) {
                 if (toEvaluate[p]) {
+                    // cout << "nodes: " << nodes[p][1] << endl;
                     if (nodes[p][1] >= numInputs) {
                         toEvaluate[nodes[p][1]-numInputs] = true;
                     }
@@ -268,6 +269,10 @@ class CartesianGP {
             int bestFit = -1; 
             vector<int> bestIndividual;
             for (it = 1; it <= iters; ++it) { 
+                if (bestFit == numSamples) {
+                    it--;
+                    break;
+                } 
                 for (auto individual : population) {
                     int currFit = fitness(individual);
                     if ((bestFit == -1) or (currFit > bestFit)) {
@@ -288,6 +293,9 @@ class CartesianGP {
                     population.push_back(child);
                 }
             }
+
+            cout << "FINAL Gen " << it << " :" << endl << endl;
+
         }
 };
 
