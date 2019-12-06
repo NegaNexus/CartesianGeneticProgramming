@@ -318,6 +318,9 @@ class CartesianGP {
                     if ((i == node[1]) or (i == node[2])) {
                         inputsUsed[i] = true; 
                     }
+                    else {
+                        inputsUsed[i] = false;
+                    }
                 }
             }
 
