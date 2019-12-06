@@ -295,7 +295,43 @@ class CartesianGP {
             }
 
             cout << "FINAL Gen " << it << " :" << endl << endl;
+            vector<int> unsplit = vector<int>(bestIndividual.begin(), bestIndividual.end()-numOutputs);
+            vector<int> outputGenes = vector<int>(bestIndividual.begin()+(arity+1)*length*width, bestIndividual.end());
+            
+            int n = arity+1;
+            int size = (unsplit.size()-1)/n+1;
+            
+            vector<int> nodes[size];
 
+            for (int i = 0; i < size; ++i) {
+                auto start = next(unsplit.cbegin(), i*n);
+                auto end = next(unsplit.cbegin(), i*n + n);
+
+                nodes[i].resize(n);
+
+                copy(start, end, nodes[i].begin());
+            }
+            
+            bool inputsUsed[numInputs];
+            for (auto node : nodes) {
+                for (int i = 0; i < numInputs; ++i) {
+                    if ((i == node[1]) or (i == node[2])) {
+                        inputsUsed[i] = true; 
+                    }
+                }
+            }
+
+            for (int i = 0; i < numInputs; ++i) { 
+                cout << i << " "; 
+                if (inputsUsed[i]) {
+                    cout << "U";
+                }
+                else {
+                    cout << "x";
+                }
+                cout << " INPUT     "; 
+            }
+            cout << endl;
         }
 };
 
