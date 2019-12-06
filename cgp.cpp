@@ -386,6 +386,9 @@ class CartesianGP {
                 if (outputs[i]) {
                     cout << "T";
                 }
+                else if (toEvaluate[i] == false) {
+                    cout << "?"; 
+                }
                 else {
                     cout << "F";
                 }
