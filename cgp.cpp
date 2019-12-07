@@ -65,14 +65,6 @@ class CartesianGP {
 
                 population.push_back(individual);
             }
-
-            // Print population
-            for (const vector<int> &v : population) {
-                for (int x : v) {
-                    cout << x << " ";
-                }
-                cout << endl;
-            }
         }
 
         vector<bool> identify(vector<int> individual) {
@@ -218,7 +210,7 @@ class CartesianGP {
         }
 
         void mutate(vector<int>& individual) {
-            int upper = numInputs;
+            int upper; // = numInputs;
 
             vector<int> range;
             for (unsigned int i = 0; i < individual.size(); ++i) {
@@ -248,7 +240,7 @@ class CartesianGP {
             for (auto choice : choices) {
                 if (choice <= (width*length*(arity+1))) {
                     if (choice % width == 0) {
-                        upper = numInputs+(choice/(arity+1));
+                        upper = numInputs+choice%(arity+1); // (choice/(arity+1));
                     }
 
                     if (choice % (arity+1) == 0) {
@@ -426,38 +418,40 @@ class CartesianGP {
 
             cout << endl << "Fitness: " << fixed << setprecision(6) << (double)bestFit << endl;
 
-            for (auto x : bestIndividual) {
-                cout << x << " ";
-            }
-            cout << endl;
-
+            int k = 0;
             for (auto gene : outputGenes) {
-                cout << genOutput(gene, nodes) << endl;
+                cout << k << " " << genOutput(gene, nodes) << endl;
+                ++k;
             }
         }
 
         string genOutput(int num, vector<int> nodes[]) {
             string out = ""; 
             if (num >= numInputs) {
-                bool in1 = nodes[num-numInputs][1];
-                bool in2 = nodes[num-numInputs][2];
+                num -= numInputs;
 
-                out += genOutput(in1, nodes);
+                int in1 = nodes[num][1]; // -numInputs][1];
+                int in2 = nodes[num][2]; // -numInputs][2];
 
-                if (nodes[num-numInputs][0] == 0) {
-                    out += " and ";
+                if (nodes[num][0] == 3) {
+                    out += "( not ";
+                    out += genOutput(in1, nodes);
                 }
-                else if (nodes[num-numInputs][0] == 1) {
-                    out += " or ";
-                }
-                else if (nodes[num-numInputs][0] == 2) {
-                    out += " xor ";
-                }
-                else if (nodes[num-numInputs][0] == 3) {
-                    out += " not ";
-                }
+                else {
+                    out += "(" + genOutput(in1, nodes);
 
-                out += genOutput(in2, nodes);
+                    if (nodes[num][0] == 0) {
+                        out += " and ";
+                    }
+                    else if (nodes[num][0] == 1) {
+                        out += " or ";
+                    }
+                    else if (nodes[num][0] == 2) {
+                        out += " xor ";
+                    }
+
+                    out += genOutput(in2, nodes) + ")";
+                }
             }
             else {
                 out += (char)(num + 65);
