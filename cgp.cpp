@@ -194,16 +194,17 @@ class CartesianGP {
                 // cout << endl;
                 // cout << "---" << endl;
 
-                bool flag = true;
+                // bool flag = true;
                 for (int  j = 0; j < numOutputs; ++j) {
                     if (trueOutput[j] != output[j]) {
-                        flag = false;
+                        // flag = false;
+                        ++fit;
                     }
                 }
 
-                if (flag) {
-                    fit++;
-                }
+                // if (flag) {
+                //     fit++;
+                // }
             }
 
             return fit;
@@ -261,7 +262,7 @@ class CartesianGP {
             int bestFit = -1; 
             vector<int> bestIndividual;
             for (it = 1; it <= iters; ++it) { 
-                if (bestFit == numSamples) {
+                if (bestFit == numOutputs*numSamples) {
                     it--;
                     break;
                 } 
@@ -320,6 +321,9 @@ class CartesianGP {
                 }
             }
 
+            if (length*width+numInputs >= 10) {
+                cout << " ";
+            }
             for (int i = 0; i < numInputs; ++i) { 
                 cout << i << " "; 
                 if (inputsUsed[i]) {
@@ -360,8 +364,12 @@ class CartesianGP {
             }
 
             for (int i = 0; i < (length*width); ++i) {
-                if (i % 3 == 0) {
+                if (i % width == 0) {
                     cout << endl;
+                }
+
+                if ((i+numInputs < 10) and (length*width+numInputs) >= 10) {
+                    cout << " ";
                 }
 
                 cout << i+numInputs << " ";
@@ -391,14 +399,17 @@ class CartesianGP {
                     cout << "NOT";
                 }
 
-                cout << " (  " << nodes[i][1];
+                if (nodes[i][1]) {
+                    cout << " ";
+                }
+                cout << " ( " << nodes[i][1];
                 cout << "  " << nodes[i][2] << " )";
                 cout << "    "; 
 
             }
 
             for (int i = 0; i < numOutputs; ++i) {
-                if (i % 3 == 0) {
+                if (i % numOutputs == 0) {
                     cout << endl;
                 }
 
@@ -469,7 +480,7 @@ int main() {
     // auto toEvaluate = model.identify(model.population[0]);
     // cout << model.fitness(model.population[0]) << endl;
    
-    model.run(1000);
+    model.run(5000);
 
     // for (auto x : model.population[0]) {
     //     cout << x << " ";
