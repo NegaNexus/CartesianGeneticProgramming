@@ -92,10 +92,10 @@ class CartesianGP {
             //     cout << endl;
             // }
 
-            vector<bool> toEvaluate;
-            for (int i = 0; i < size; ++i) {
-                toEvaluate.push_back(false);
-            }
+            vector<bool> toEvaluate (size);
+            // for (int i = 0; i < size; ++i) {
+            //     toEvaluate.push_back(false);
+            // }
 
             for (int p = 0; p < numOutputs; ++p) {
                 if (outputGenes[p] >= numInputs) {
@@ -210,7 +210,7 @@ class CartesianGP {
         }
 
         void mutate(vector<int>& individual) {
-            int upper; // = numInputs;
+            int upper = numInputs;
 
             vector<int> range;
             for (unsigned int i = 0; i < individual.size(); ++i) {
@@ -435,7 +435,7 @@ class CartesianGP {
 
                 if (nodes[num][0] == 3) {
                     out += "( not ";
-                    out += genOutput(in1, nodes);
+                    out += genOutput(in1, nodes) + ")";
                 }
                 else {
                     out += "(" + genOutput(in1, nodes);
@@ -454,7 +454,9 @@ class CartesianGP {
                 }
             }
             else {
+                out += " ";
                 out += (char)(num + 65);
+                out += " ";
             }
 
             return out;
