@@ -240,14 +240,15 @@ class CartesianGP {
 
             for (auto choice : choices) {
                 if (choice <= (width*length*(arity+1))) {
-                    if (choice % width == 0) {
-                        upper = numInputs+choice%(arity+1); // (choice/(arity+1));
-                    }
+                    // if ((choice/(arity+1)) % width == 0) {
+                    //     upper = numInputs+choice/(arity+1); // (choice/(arity+1));
+                    // }
 
                     if (choice % (arity+1) == 0) {
                         individual[choice] = randMod(4); 
                     }
                     else {
+                        upper = numInputs+choice/(arity+1);
                         individual[choice] = randMod(upper);
                     }
                 }
