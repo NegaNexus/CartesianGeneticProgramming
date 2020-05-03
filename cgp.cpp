@@ -85,17 +85,7 @@ class CartesianGP {
                 copy(start, end, nodes[i].begin());
             }
 
-            // Print split
-            // for (int i = 0; i < size; ++i) {
-            //     for (int j = 0; j < nodes[i].size(); ++j)
-            //         cout << nodes[i][j] << " ";
-            //     cout << endl;
-            // }
-
             vector<bool> toEvaluate (size);
-            // for (int i = 0; i < size; ++i) {
-            //     toEvaluate.push_back(false);
-            // }
 
             for (int p = 0; p < numOutputs; ++p) {
                 if (outputGenes[p] >= numInputs) {
@@ -105,8 +95,6 @@ class CartesianGP {
 
             for (int p = size; p >= 0; --p) {
                 if (toEvaluate[p]) {
-                    // cout << "nodes: " << nodes[p][1] << endl;
-                    // cout << nodes[p][1] << endl;
                     if (nodes[p][1] >= numInputs) {
                         toEvaluate[nodes[p][1]-numInputs] = true;
                     }
@@ -182,29 +170,11 @@ class CartesianGP {
                     ++k;
                 }
 
-                // for (int j = 0; j < numOutputs; ++j) {
-                //     cout << trueOutput[j] << ' '; 
-                // }
-                // cout << endl;
-                // cout << endl;
-
-                // for (int j = 0; j < numOutputs; ++j) {
-                //     cout << output[j] << ' '; 
-                // }
-                // cout << endl;
-                // cout << "---" << endl;
-
-                // bool flag = true;
                 for (int  j = 0; j < numOutputs; ++j) {
                     if (trueOutput[j] != output[j]) {
-                        // flag = false;
                         ++fit;
                     }
                 }
-
-                // if (flag) {
-                //     fit++;
-                // }
             }
 
             return fit;
@@ -223,27 +193,11 @@ class CartesianGP {
             for (int i = 0; i < num; ++i) {
                 int index = randMod(range.size());
                 choices[i] = range[index];
-                // cout << "choices: " << choices[i] << endl;
-                // for (auto x : range) {
-                //     cout << x << ' ';
-                // }
-                // cout << endl;
-                // cout << "===" << endl;
                 range.erase(range.begin()+index);
             }
 
-            // for (auto x : choices) {
-            //     cout << x << ' ';
-            // }
-            // cout << endl;
-            // cout << "---" << endl;
-
             for (auto choice : choices) {
                 if (choice <= (width*length*(arity+1))) {
-                    // if ((choice/(arity+1)) % width == 0) {
-                    //     upper = numInputs+choice/(arity+1); // (choice/(arity+1));
-                    // }
-
                     if (choice % (arity+1) == 0) {
                         individual[choice] = randMod(4); 
                     }
@@ -335,7 +289,6 @@ class CartesianGP {
                 }
                 cout << " INPUT     "; 
             }
-            // cout << endl;
 
             map<int, bool> outputs; 
 
@@ -442,8 +395,8 @@ class CartesianGP {
             if (num >= numInputs) {
                 num -= numInputs;
 
-                int in1 = nodes[num][1]; // -numInputs][1];
-                int in2 = nodes[num][2]; // -numInputs][2];
+                int in1 = nodes[num][1];
+                int in2 = nodes[num][2];
 
                 if (nodes[num][0] == 3) {
                     out += "( not ";
@@ -478,27 +431,7 @@ class CartesianGP {
 
 int main() {
     CartesianGP model;
-    // auto toEvaluate = model.identify(model.population[0]);
-    // cout << model.fitness(model.population[0]) << endl;
-   
     model.run(5000);
 
-    // for (auto x : model.population[0]) {
-    //     cout << x << " ";
-    // }
-    // cout << endl;
-
-    // auto mutated = model.population[0];
-    // model.mutate(mutated);
-
-    // for (auto x : mutated) {
-    //     cout << x << " ";
-    // }
-    // cout << endl;
-
-    // for (auto x : toEvaluate) {
-    //     cout << x << " ";
-    // }
-    
     return 0;
 }
