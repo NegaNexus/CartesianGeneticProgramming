@@ -171,7 +171,7 @@ class CartesianGP {
                 }
 
                 for (int  j = 0; j < numOutputs; ++j) {
-                    if (trueOutput[j] != output[j]) {
+                    if (trueOutput[j] == output[j]) {
                         ++fit;
                     }
                 }
@@ -188,7 +188,7 @@ class CartesianGP {
                 range.push_back(i);
             }
             
-            int num = 0.2*individual.size();
+            int num = 0.7*individual.size();
             int choices[num];
             for (int i = 0; i < num; ++i) {
                 int index = randMod(range.size());
@@ -431,7 +431,7 @@ class CartesianGP {
 
 int main() {
     CartesianGP model;
-    model.run(5000);
+    model.run(15000);
 
     return 0;
 }
