@@ -67,6 +67,7 @@ class CartesianGP {
             }
         }
 
+        // Identify which nodes to evaluate
         vector<bool> identify(vector<int> individual) {
             vector<int> unsplit = vector<int>(individual.begin(), individual.end()-numOutputs);
             vector<int> outputGenes = vector<int>(individual.begin()+(arity+1)*length*width, individual.end());
@@ -107,6 +108,7 @@ class CartesianGP {
             return toEvaluate;
         }
 
+        // Fitness is calculated by counting the total number of correct outputs 
         int fitness(vector<int> individual) {
             vector<int> unsplit = vector<int>(individual.begin(), individual.end()-numOutputs);
             vector<int> outputGenes = vector<int>(individual.begin()+(arity+1)*length*width, individual.end());
@@ -180,6 +182,7 @@ class CartesianGP {
             return fit;
         }
 
+        // Mutate a given individual 
         void mutate(vector<int>& individual) {
             int upper = numInputs;
 
@@ -212,6 +215,7 @@ class CartesianGP {
             }
         }
 
+        // Run evolution for a given number of iterations (default to 10,000)
         void run(int iters=10000) {
             int it;
             int bestFit = -1; 
@@ -240,6 +244,7 @@ class CartesianGP {
                 }
             }
 
+            // Output the final graph (see PDF for details on output meaning
             cout << "FINAL Gen " << it << " :" << endl << endl;
             vector<int> unsplit = vector<int>(bestIndividual.begin(), bestIndividual.end()-numOutputs);
             vector<int> outputGenes = vector<int>(bestIndividual.begin()+(arity+1)*length*width, bestIndividual.end());
@@ -390,6 +395,7 @@ class CartesianGP {
             }
         }
 
+        // Return the expression for a given output number (num) and set of nodes (nodes) 
         string genOutput(int num, vector<int> nodes[]) {
             string out = ""; 
             if (num >= numInputs) {
@@ -430,7 +436,10 @@ class CartesianGP {
 };
 
 int main() {
+    // Create new model
     CartesianGP model;
+
+    // Run model with 15,000 iterations
     model.run(15000);
 
     return 0;
