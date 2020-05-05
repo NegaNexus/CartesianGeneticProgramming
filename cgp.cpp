@@ -216,6 +216,8 @@ class CartesianGP {
         }
 
         // Run evolution for a given number of iterations (default to 10,000)
+        // 
+        // Uses ES(1+4)
         void run(int iters=10000) {
             int it;
             int bestFit = -1; 
