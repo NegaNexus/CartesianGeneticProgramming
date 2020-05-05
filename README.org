@@ -1,0 +1,15 @@
+* Cartesian Genetic Programming
+  This is a C++ implementation of the Cartesian Genetic Programming model. It
+uses the Evolution Strategies algorithm ES(1+4).
+
+** Usage
+   Run ~make~ followed by ~./cgp~ and your input to stdout, such as ~./cgp <
+   tests/adder4.in~
+
+   Also, see [[assignment-description.pdf]] for details on output format.
+
+** Credits
+   Inspiration came from /Introduction to Evolutionary Computation, 2nd Edition/
+   by A. E. Eiben and J. E. Smith, /Essentials of Metaheuristics, 2nd Edition/
+   by Sean Luke, /Cartesian Genetic Programming/ by Julian Miller, and the
+   slides by Julian Miller in [[slides.pdf]].
