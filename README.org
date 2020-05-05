@@ -13,3 +13,6 @@ uses the Evolution Strategies algorithm ES(1+4).
    by A. E. Eiben and J. E. Smith, /Essentials of Metaheuristics, 2nd Edition/
    by Sean Luke, /Cartesian Genetic Programming/ by Julian Miller, and the
    slides by Julian Miller in [[slides.pdf]].
+   
+   The [[rand.h]] header file and associated [[randmt.cup]] was provided by Robert Heckendorn.
+   See those files for credits.
